@@ -8,33 +8,33 @@ import auth from "./auth/authService";
 Vue.use(Router);
 
 const router = new Router({
-  mode: "history",
-  base: process.env.BASE_URL,
-  routes: [
-    {
-      path: "/",
-      name: "home",
-      component: Home
-    },
-    {
-      path: "/home",
-      name: "todo",
-      component: TodoHome
-    },
-    {
-      path: "/callback",
-      name: "callback",
-      component: Callback
-    }
-  ]
+    mode: "history",
+    base: process.env.BASE_URL,
+    routes: [
+        {
+            path: "/",
+            name: "home",
+            component: Home
+        },
+        {
+            path: "/home",
+            name: "todo",
+            component: TodoHome
+        },
+        {
+            path: "/callback",
+            name: "callback",
+            component: Callback
+        }
+    ]
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.path === "/" || to.path === "/callback" || auth.isAuthenticated()) {
-    return next();
-  }
+    if (to.path === "/" || to.path === "/callback" || auth.isAuthenticated()) {
+        return next();
+    }
 
-  auth.login({ target: to.path });
+    auth.login({ target: to.path });
 });
 
 export default router;

@@ -1,19 +1,21 @@
 <template>
-  <div class="spinner">
-    <img src="../assets/loading.svg" alt="Loading">
-  </div>
+    <div class="spinner">
+        <img 
+            src="../assets/loading.svg" 
+            alt="Loading">
+    </div>
 </template>
 
 <script>
 export default {
-  methods: {
-    handleLoginEvent(data) {
-      window.location.href = data.state.target || "/home";
-    }
-  },
-  created() {
-    this.$auth.handleAuthentication();
-  }
+    created() {
+        this.$auth.handleAuthentication();
+    },
+    methods: {
+        handleLoginEvent(data) {
+            window.location.href = data.state.target || "/home";
+        }
+    },
 };
 </script>
 
