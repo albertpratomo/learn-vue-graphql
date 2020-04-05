@@ -1,6 +1,14 @@
 <template>
     <div>
         <div class="todoListwrapper">
+            <div v-if="$apollo.queries.todos.loading">
+                Loading...
+            </div>
+
+            <div v-if="error">
+                {{ error }}
+            </div>
+            
             <TodoItem 
                 :todos="filteredTodos" 
                 :type="type" 
@@ -30,6 +38,7 @@ export default {
         return {
             type: "private",
             filterType: "all",
+            error: null,
         }
     },
     apollo: {
@@ -44,6 +53,9 @@ export default {
                     }
                 }
             `,
+            error(error) {
+                this.error = JSON.stringify(error.message);
+            }
         },
     },
     computed: {
