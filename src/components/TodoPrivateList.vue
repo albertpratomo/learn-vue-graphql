@@ -6,6 +6,7 @@
                 :type="type" 
             />
         </div>
+
         <TodoFilters 
             :remaining-todos="remainingTodos" 
             :filter-results="filterResults" 
@@ -17,8 +18,10 @@
 </template>
 
 <script>
+import gql from 'graphql-tag';
 import TodoItem from "../components/TodoItem";
 import TodoFilters from "../components/TodoFilters";
+
 export default {
     components: {
         TodoItem, TodoFilters
@@ -27,21 +30,21 @@ export default {
         return {
             type: "private",
             filterType: "all",
-            todos: [
-                {
-                    id: "1",
-                    title: "This is private todo 1",
-                    is_completed: true,
-                    is_public: false
-                },
-                {
-                    id: "2",
-                    title: "This is private todo 2",
-                    is_completed: false,
-                    is_public: false
-                }
-            ],
         }
+    },
+    apollo: {
+        todos: {
+            query: gql`
+                query getMyTodos {
+                    todos(where: { is_public: { _eq: false} }, order_by: { created_at: desc }) {
+                        id
+                        title
+                        created_at
+                        is_completed
+                    }
+                }
+            `,
+        },
     },
     computed: {
         remainingTodos: function() {
@@ -60,7 +63,7 @@ export default {
     },
     methods: {
         filterResults: function(type) {
-            if(type === 'active') {
+            if (type === 'active') {
                 this.filterType = "active";
             } else if(type === 'completed') {
                 this.filterType = "completed";
